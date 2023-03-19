@@ -1,0 +1,10 @@
+package com.example.demo.repository.mybatis;
+
+import java.util.List;
+
+import com.example.demo.domain.Board;
+
+
+public interface BoardMapper {
+	 public List<Board> selectAll();
+}

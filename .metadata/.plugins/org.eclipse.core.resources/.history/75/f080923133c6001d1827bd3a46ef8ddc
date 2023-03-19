@@ -1,0 +1,29 @@
+package com.example.demo.repository.mybatis;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.domain.Board;
+import com.example.demo.repository.BoardRepository;
+
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+
+@Repository
+@RequiredArgsConstructor
+public class MybatisBoardRepository implements BoardRepository {
+	
+	private final BoardMapper boardMapper;
+
+	@Override
+	public List<Board> selectAll() {
+		// TODO Auto-generated method stub
+		
+		List<Board> boardList = boardMapper.selectAll();
+		
+		return boardList;
+	}
+
+}

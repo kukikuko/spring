@@ -1,0 +1,9 @@
+package com.example.demo.dto;
+
+
+public class Board {
+	
+	private String id;
+	private String name;
+	priavate
+}

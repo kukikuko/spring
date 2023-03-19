@@ -1,0 +1,23 @@
+package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.example.demo.repository.BoardRepository;
+import com.example.demo.repository.mybatis.BoardMapper;
+import com.example.demo.repository.mybatis.MybatisBoardRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Configuration
+@RequiredArgsConstructor
+public class AppBeanconfig {
+
+	private BoardMapper boardMapper;
+	
+	@Bean
+	public BoardRepository boardRepository() {
+		return new MybatisBoardRepository(boardMapper);
+	}
+	
+}

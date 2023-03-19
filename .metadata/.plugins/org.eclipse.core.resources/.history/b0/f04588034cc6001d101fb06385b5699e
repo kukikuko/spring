@@ -1,0 +1,27 @@
+package com.example.demo.repository.mybatis;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.domain.Country;
+import com.example.demo.repository.CountryRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class MybatisCountryRepository implements CountryRepository{
+	
+	private final CountryMapper countryMapper;
+
+	@Override
+	public List<Country> selectAll() {
+		// TODO Auto-generated method stub
+		
+		List<Country> countries = countryMapper.selectAll();
+		
+		return countries;
+	}
+
+}

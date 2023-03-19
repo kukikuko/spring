@@ -1,0 +1,13 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import com.example.demo.domain.Country;
+
+public interface CountryRepository {
+	
+	
+	public List<String> selectNation(); 
+	
+	public List<String> selectCity(String nt);
+}

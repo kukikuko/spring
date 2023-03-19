@@ -1,0 +1,44 @@
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.demo.domain.Board;
+import com.example.demo.repository.BoardRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequiredArgsConstructor
+public class HomeController {
+	
+	private final BoardRepository boardRepository;
+
+	@GetMapping("/")
+	public String Home(Model model) {
+		
+		
+		List<Board> boardList = boardRepository.selectAll();
+		log.info(boardList.toString());
+		model.addAttribute("boardList", boardList);
+		
+		return "index";
+	}
+	
+	@PostMapping("/")
+	public String board(Board b) {
+		
+		log.info(b.toString());
+		boardRepository.insert(b);
+		
+		
+		
+		return "redirect:/";
+	}
+}

@@ -1,0 +1,56 @@
+package com.example.demo.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.example.demo.domain.Board;
+import com.example.demo.repository.BoardRepository;
+import com.example.demo.repository.CountryRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequiredArgsConstructor
+public class HomeController {
+	
+	private final BoardRepository boardRepository;
+	private final CountryRepository countryRepository;
+
+	@GetMapping("/")
+	public String Home(Model model) {
+		
+		
+		List<Board> boardList = boardRepository.selectAll();
+		List<String> nationList = countryRepository.selectNation();
+		List<String> nameList = new ArrayList<>();
+		
+		for(Board b : boardList) {
+			if(!nameList.contains(b.getName())) {
+				nameList.add(b.getName());
+			}
+		}
+		
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("nationList", nationList);
+		model.addAttribute("nameList", nameList);
+		return "index";
+	}
+	
+	@RequestMapping("/combo")
+	@ResponseBody
+	public void combo(@RequestParam(name = "nation") String nation) {
+		
+		log.info(nation);
+		
+	}
+}

@@ -1,0 +1,36 @@
+<html>
+<head>
+	<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Spring Boot Application</title>
+</head>
+<body>
+	<div>
+		<div>
+			<form method="post">
+				<input placeholder="아이디" type="text" name="id">
+				<input placeholder="이름" type="text" name="name">
+				<input placeholder="국가" type="text" name="nation">
+				<input placeholder="도시" type="text" name="city">
+	  			<input type='radio' name='gender' value='male' />남
+				<input type='radio' name='gender' value='female' />여
+				<button type="submit">저장</button>
+			</form>
+		</div>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>선택</th>
+						<th>아이디</th>
+						<th>이름</th>
+						<th>성별</th>
+						<th>국가</th>
+						<th>도시</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
