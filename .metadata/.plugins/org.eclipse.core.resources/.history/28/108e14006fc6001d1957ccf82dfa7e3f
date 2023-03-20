@@ -1,0 +1,20 @@
+#http port
+server.port=8080
+ 
+#db Connection(Oracle)
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521/orcl
+spring.datasource.username=scott
+spring.datasource.password=tiger
+ 
+#thymeleaf auto refresh
+spring.thymeleaf.cache=false
+ 
+mybatis.type-aliases-package=com.example.demo.domain
+mybatis.configuration.map-underscore-to-camel-case=true
+mybatis.mapper-locations=classpath:mapper/*.xml
+mybatis.configuration.jdbc-type-for-null=null
+ 
+spring.mvc.view.prefix=/WEB-INF/view/
+spring.mvc.view.suffix=.jsp
+spring.mvc.static-path-pattern=/resources/static/**

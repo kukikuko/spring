@@ -3,8 +3,10 @@ package com.example.demo.repository.mybatis;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.SaveTime;
 
 @Mapper
 public interface BoardMapper {
@@ -12,5 +14,7 @@ public interface BoardMapper {
 	 
 	 public Integer insert(Board board);
 	 
-	 public List<Board> search(Board board);
+	 public List<Board> search(@Param("board") Board board, @Param("saveTime") SaveTime saveTime);
+	 
+	 public void delete(int no);
 }

@@ -1,0 +1,17 @@
+package com.example.demo.repository.mybatis;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.example.demo.domain.Board;
+import com.example.demo.domain.SaveTime;
+
+@Mapper
+public interface BoardMapper {
+	 public List<Board> selectAll();
+	 
+	 public Integer insert(Board board);
+	 
+	 public List<Board> search(Board board, SaveTime saveTime);
+}

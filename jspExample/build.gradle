@@ -23,6 +23,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
 	implementation group: 'org.glassfish.web', name: 'jakarta.servlet.jsp.jstl', version: '2.0.0'
+	
+	implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+	implementation group: 'org.apache.tika', name: 'tika-core', version: '2.3.0'
+	 implementation 'org.json:json:20200518'
 }
 
 tasks.named('test') {

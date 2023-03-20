@@ -1,0 +1,249 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+	<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Spring Boot Application</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <link href="css/datepicker.min.css" rel="stylesheet" type="text/css" media="all">
+    <script src="js/datepicker.js"></script> 
+    <script src="js/datepicker.ko.js"></script>
+</head>
+<body>
+	<div>
+		<div>
+			<form method="post">
+				<input placeholder="아이디" type="text" name="id">
+				<select name="name" >
+				    <option value="none">=== 선택 ===</option>
+				    <c:forEach items="${nameList}" var="name">
+				    	<option value="${name}">${name}</option>
+				    </c:forEach>
+				</select>
+				<select name="nation" id="nation" onchange="ct(this)">
+				    <option value="none">=== 선택 ===</option>
+				    <c:forEach items="${nationList}" var="nation">
+				    	<option value="${nation}">${nation}</option>
+				    </c:forEach>
+				</select>
+				<select name="city" id="city">
+				    <option value="none">=== 선택 ===</option>
+				</select>
+	  			<input type='radio' name='gender' value='남' />남
+				<input type='radio' name='gender' value='여' />여
+				시작일<input type="text" id="datepicker1" name="startDate">
+				<input type="text" id="datepicker2" name="endDate">
+				<button type="submit">조회</button>
+				<button id="updateBtn" type="button">저장</button>
+				<button id="saveBtn" type="button">엑셀저장</button>
+				<button id="deleteBtn" type="button">삭제</button>
+			</form>
+		</div>
+		<div>
+			<table id="boardTable">
+				<thead>
+					<tr>
+						<th><input type="checkbox" id="cbx_chkAll" /></th>
+						<th>아이디</th>
+						<th>이름</th>
+						<th>성별</th>
+						<th>국가</th>
+						<th>도시</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<form method="post" name="boardForm" id="boardForm" action="/delete">
+						<c:forEach items="${boardList}" var="board">
+							<tr>
+								<td><input type="checkbox" name="no" value="${board.no}"></td>
+								<td>${board.id}</td>
+								<td>${board.name}</td>
+								<td>${board.gender}</td>
+								<td>${board.nation}</td>
+								<td>${board.city}</td>
+							</tr>
+						</c:forEach>
+					</form>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+		$("#saveBtn").click(function() {
+			let q = $("#boardTable tbody tr").length;
+			const dataArray = [];
+			for (let i = 0; i < q; i++) {
+			    arr[i] = new Array(5);
+			}
+			$("#boardTable tbody tr").each(function(index){
+				var len = $(this).find("td").length;
+				for(let i=1; i< len; i++) {
+					dataArray[index][i-1] = $(this).find("td").eq(i).text();
+					console.log($(this).find("td").eq(i).text());
+				}
+			console.log(dataArray);
+		});
+			console.log(dataArray);
+			var jsonData = JSON.stringify(dataArray);
+			console.log(jsonData);
+			$.ajax({
+				type: "POST",
+				url: "/excel",
+				data: {data : jsonData},
+				success: function(data) {
+				console.log('done');
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+				console.log('error while post');
+				}
+			});
+		});
+
+
+	
+	
+	document.getElementById('deleteBtn').addEventListener('click', (e)=>{ 
+		e.preventDefault();
+		let form = document.boardForm;
+		if(confirm("삭제 하시겠습니까?")) {
+			form.submit();
+		}
+	});
+
+
+	$(document).ready(function() {
+		$("#cbx_chkAll").click(function() {
+			if($("#cbx_chkAll").is(":checked")) $("input[name=no]").prop("checked", true);
+			else $("input[name=no]").prop("checked", false);
+		});
+		
+		$("input[name=no]").click(function() {
+			var total = $("input[name=no]").length;
+			var checked = $("input[name=no]:checked").length;
+			
+			if(total != checked) $("#cbx_chkAll").prop("checked", false);
+			else $("#cbx_chkAll").prop("checked", true); 
+		});
+	});
+	
+	
+	function ct(o) {
+		$("#city > option").remove('.city');
+		var nation = o.value;
+		if(nation != "none") {
+			$.ajax({
+				  type: "POST",
+				  url: "/combo",
+				  data: {nation : nation},
+				  success: function(data) {
+				  	var laborOption = "";
+				  	for(let i = 0; i<data.length; i++) {
+				  		console.log(data[i]);
+				  		laborOption = "<option class='city' value='" + data[i] + "'>" + data[i] + "</option>";
+				  		$("#city").append(laborOption);
+				  	}
+				  }
+			})
+		}
+	}
+	
+	 $("#datepicker").datepicker({
+	    	language: 'ko'
+	    }); 
+	 
+	 datePickerSet($("#datepicker1"), $("#datepicker2"), true); //다중은 시작하는 달력 먼저, 끝달력 2번째
+
+	 /*
+	     * 달력 생성기
+	     * @param sDate 파라미터만 넣으면 1개짜리 달력 생성
+	     * @example   datePickerSet($("#datepicker"));
+	     * 
+	     * 
+	     * @param sDate, 
+	     * @param eDate 2개 넣으면 연결달력 생성되어 서로의 날짜를 넘어가지 않음
+	     * @example   datePickerSet($("#datepicker1"), $("#datepicker2"));
+	     */
+	 function datePickerSet(sDate, eDate, flag) {
+
+	     //시작 ~ 종료 2개 짜리 달력 datepicker	
+	     if (!isValidStr(sDate) && !isValidStr(eDate) && sDate.length > 0 && eDate.length > 0) {
+	         var sDay = sDate.val();
+	         var eDay = eDate.val();
+
+	         if (flag && !isValidStr(sDay) && !isValidStr(eDay)) { //처음 입력 날짜 설정, update...			
+	             var sdp = sDate.datepicker().data("datepicker");
+	             sdp.selectDate(new Date(sDay.replace(/-/g, "/")));  //익스에서는 그냥 new Date하면 -을 인식못함 replace필요
+
+	             var edp = eDate.datepicker().data("datepicker");
+	             edp.selectDate(new Date(eDay.replace(/-/g, "/")));  //익스에서는 그냥 new Date하면 -을 인식못함 replace필요
+	         }
+
+	         //시작일자 세팅하기 날짜가 없는경우엔 제한을 걸지 않음
+	         if (!isValidStr(eDay)) {
+	             sDate.datepicker({
+	                 maxDate: new Date(eDay.replace(/-/g, "/"))
+	             });
+	         }
+	         sDate.datepicker({
+	             language: 'ko',
+	             autoClose: true,
+	             onSelect: function () {
+	                 datePickerSet(sDate, eDate);
+	             }
+	         });
+
+	         //종료일자 세팅하기 날짜가 없는경우엔 제한을 걸지 않음
+	         if (!isValidStr(sDay)) {
+	             eDate.datepicker({
+	                 minDate: new Date(sDay.replace(/-/g, "/"))
+	             });
+	         }
+	         eDate.datepicker({
+	             language: 'ko',
+	             autoClose: true,
+	             onSelect: function () {
+	                 datePickerSet(sDate, eDate);
+	             }
+	         });
+
+	         //한개짜리 달력 datepicker
+	     } else if (!isValidStr(sDate)) {
+	         var sDay = sDate.val();
+	         if (flag && !isValidStr(sDay)) { //처음 입력 날짜 설정, update...			
+	             var sdp = sDate.datepicker().data("datepicker");
+	             sdp.selectDate(new Date(sDay.replace(/-/g, "/"))); //익스에서는 그냥 new Date하면 -을 인식못함 replace필요
+	         }
+
+	         sDate.datepicker({
+	             language: 'ko',
+	             autoClose: true
+	         });
+	     }
+
+
+	     function isValidStr(str) {
+	         if (str == null || str == undefined || str == "")
+	             return true;
+	         else
+	             return false;
+	     }
+	 }
+	 
+</script>
+</html>

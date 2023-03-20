@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.SaveTime;
 import com.example.demo.repository.BoardRepository;
 
 import lombok.AllArgsConstructor;
@@ -36,12 +37,20 @@ public class MybatisBoardRepository implements BoardRepository {
 	}
 
 	@Override
-	public List<Board> search(Board board) {
+	public List<Board> search(Board board, SaveTime saveTime) {
 		// TODO Auto-generated method stub
 		
-		List<Board> boardList = boardMapper.search(board);
+		List<Board> boardList = boardMapper.search(board, saveTime);
 		
 		return boardList;
+	}
+
+	@Override
+	public void delete(int no) {
+		// TODO Auto-generated method stub
+		
+		boardMapper.delete(no);
+		
 	}
 
 }

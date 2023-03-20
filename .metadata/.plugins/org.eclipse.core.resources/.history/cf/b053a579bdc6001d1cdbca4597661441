@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.demo.repository.mybatis.BoardMapper">
+	
+	<insert id="insert" parameterType="Board">
+		insert into board values
+		(
+			board_seq.nextVal,
+			#{id},
+			#{name},
+			#{nation},
+			#{city},
+			sysDate,
+			#{gender}	
+		)
+	</insert>
+	
+	<select id="selectAll" resultType="Board">
+		select *
+		from board
+	</select>
+	
+	<select id="search" resultType="Board">
+		select *
+		from board
+		where 1=1
+		<if test="board.id != ''">
+		and id like '%'||#{board.id}||'%'
+		</if>
+		<if test="board.name != 'none'">
+		and name = #{board.name}
+		</if>
+		<if test="board.nation != 'none'">
+		and nation = #{board.nation}
+		</if>
+		<if test="board.city != 'none'">
+		and city = #{board.city}
+		</if>
+		<if test="board.gender != null">
+		and gender = #{board.gender}
+		</if>
+		<if test="saveTime.startDate != ''">
+		and to_char(saveTime, 'YYYY-MM-DD') <![CDATA[=]]> #{saveTime.startDate}
+		</if>
+		<if test="saveTime.endDate != ''">
+		and to_char(saveTime, 'YYYY-MM-DD') <![CDATA[=]]> #{saveTime.endDate}
+		</if>
+	</select>
+</mapper>

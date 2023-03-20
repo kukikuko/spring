@@ -27,20 +27,31 @@
 		select *
 		from board
 		where 1=1
-		<if test="id != ''">
-		and id like '%'||#{id}||'%'
+		<if test="board.id != ''">
+		and id like '%'||#{board.id}||'%'
 		</if>
-		<if test="name != 'none'">
-		and name = #{name}
+		<if test="board.name != 'none'">
+		and name = #{board.name}
 		</if>
-		<if test="nation != 'none'">
-		and nation = #{nation}
+		<if test="board.nation != 'none'">
+		and nation = #{board.nation}
 		</if>
-		<if test="city != 'none'">
-		and city = #{city}
+		<if test="board.city != 'none'">
+		and city = #{board.city}
 		</if>
-		<if test="gender != null">
-		and gender = #{gender}
+		<if test="board.gender != null">
+		and gender = #{board.gender}
+		</if>
+		<if test="saveTime.startDate != ''">
+		and to_char(saveTime, 'YYYY-MM-DD') <![CDATA[>=]]> #{saveTime.startDate}
+		</if>
+		<if test="saveTime.endDate != ''">
+		and to_char(saveTime, 'YYYY-MM-DD') <![CDATA[<=]]> #{saveTime.endDate}
 		</if>
 	</select>
+	
+	<delete id="delete">
+		delete from board
+		where no = #{no}
+	</delete>
 </mapper>
